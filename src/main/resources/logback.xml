@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <!-- Console appender to print logs to the console -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Pattern of the log message -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger configuration -->
+    <root level="INFO">
+        <!-- Attach the console appender to the root logger -->
+        <appender-ref ref="console"/>
+    </root>
+
+    <!-- Logger for a specific class or package -->
+    <logger name="com.myapp" level="DEBUG">
+        <!-- Attach the console appender to this specific logger -->
+        <appender-ref ref="console"/>
+    </logger>
+
+</configuration>

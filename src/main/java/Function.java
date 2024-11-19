@@ -1,3 +1,5 @@
+
+
 public enum Function {
     PARAGRAPH,
     FILL,

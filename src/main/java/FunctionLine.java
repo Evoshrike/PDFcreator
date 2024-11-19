@@ -1,3 +1,5 @@
+
+
 public class FunctionLine implements LineContent {
     private int indentAmt = 0;
     private Function f;
@@ -18,4 +20,11 @@ public class FunctionLine implements LineContent {
         }
     }
 
+    public Function getF() {
+        return f;
+    }
+
+    public int getIndentAmt() {
+        return indentAmt;
+    }
 }
