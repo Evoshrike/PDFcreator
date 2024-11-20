@@ -1,6 +1,8 @@
 # PDF Creator
 ## Introduction
-This PDF creator uses iText to parse a txt file following a series of commands to render a PDF with styling, formatting and seperation of paragraphs. 
+This PDF creator uses iText to parse a txt file following a series of commands to render a PDF with styling, formatting 
+and seperation of paragraphs. It is built with Maven, so should work in any IDE without any configuration (I have tested with both
+IntelliJ and Eclipse) 
 ## Testing
 - In `src/tests/java` there are a series of unit tests for the `Parser` and `Writer` classes.
 -  In `src/main/java`, running the `Main` class will produce a `testoutput.pdf` file with the example PDF from the brief repeated multiple times to demonstrate pagination. 
