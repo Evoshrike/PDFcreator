@@ -1,6 +1,6 @@
 
 public class TextLine implements LineContent {
-    private String text;
+    private final String text;
 
     public TextLine(String s){
         this.text = s;

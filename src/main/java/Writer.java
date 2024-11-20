@@ -10,18 +10,19 @@ import com.itextpdf.layout.properties.TextAlignment;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class Writer {
     private boolean bold;
     private boolean italic;
     private boolean largeText;
-    private int indentAmt;
+    private int indentNumber;
+
+    private final float indentAmt;
 
     private Paragraph paragraph;
 
-    private Document document;
-    private List<LineContent> lineContents;
+    private final Document document;
+    private final List<LineContent> lineContents;
 
 
 
@@ -32,7 +33,9 @@ public class Writer {
         bold = false;
         italic = false;
         largeText = false;
-        indentAmt = 0;
+        indentNumber = 0;
+        // Hardcoded here but can be changed - no reason it has to be 15.
+        indentAmt = 15.0F;
 
     }
 
@@ -51,6 +54,7 @@ public class Writer {
 
                 } else {
                     assert c instanceof TextLine;
+                    // Create Text object for each line of input to allow bold text with normal in same line of output
                     Text text = new Text(((TextLine) c).getText());
                     text.setFont(font);
                     if (bold) text.setBold();
@@ -62,16 +66,19 @@ public class Writer {
                     }
                     paragraph.add(text);
 
+                }
             }
-        }
-        document.add(paragraph);
-        document.close();
+            // Add last paragraph
+            document.add(paragraph);
+            document.close();
         } catch (IOException e) {
+            document.close();
+            // This should never happen (argument to createFont always legal) hence not gracefully handled
             throw new RuntimeException("Error creating fonts");
         }
 
     }
-
+    // Supplementary method for write()
     private void handleCommand(FunctionLine c) {
         switch (c.getF()) {
             case BOLD: {
@@ -100,9 +107,10 @@ public class Writer {
             }
             case INDENT: {
 
-                // ASSUMPTION: indent is provided as int.
-                indentAmt += c.getIndentAmt();
-                float indent = ((float) indentAmt)*15.0F;
+
+                indentNumber += c.getIndentNumber();
+
+                float indent = ((float) indentNumber)*indentAmt;
                 paragraph.setMarginLeft((indent));
                 break;
             }
@@ -110,8 +118,8 @@ public class Writer {
                 paragraph.setTextAlignment(TextAlignment.JUSTIFIED);
                 break;
             }
-            case NOFILL: {
-                // ASSSUMED Nofill is default for ending a paragraph and going back to default
+            case NO_FILL: {
+                // ASSSUMED Nofill is default for ending a paragraph and going back to default (i.e. left aligned)
                 document.add(paragraph);
                 paragraph = new Paragraph();
 
@@ -121,17 +129,21 @@ public class Writer {
             case PARAGRAPH: {
                 document.add(paragraph);
                 paragraph = new Paragraph();
-                paragraph.setMarginLeft(((float) indentAmt)*15.0F);
+                paragraph.setMarginLeft(((float) indentNumber)*15.0F);
 
             }
         }
+    }
+
+    public float getIndentAmt() {
+        return indentAmt;
     }
 
     public Paragraph getParagraph() {
         return paragraph;
     }
 
-    public int getIndentAmt() {
-        return indentAmt;
+    public int getIndentNumber() {
+        return indentNumber;
     }
 }

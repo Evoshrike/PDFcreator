@@ -47,6 +47,8 @@ public class PDFCreator {
             writer.write();
             document.close();
         } catch (FileNotFoundException e){
+            // Don't need .close() here as exception is thrown by PdfWriter constructor.
+            // Document will not be created if this error is thrown
             System.out.println("Error creating file: " + e.getMessage());
         }
 

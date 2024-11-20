@@ -15,13 +15,13 @@ public class Parser {
             ".normal", Function.NORMAL,
             ".indent", Function.INDENT,
             ".regular", Function.REGULAR,
-            ".nofill", Function.NOFILL);
+            ".nofill", Function.NO_FILL);
 
 
     public static LinkedList<LineContent> parse(List<String> lines){
         LinkedList<LineContent> lineContents = new LinkedList<>();
         for (String l : lines){
-
+            // Clean newline characters from file
             l = l.replaceAll("[\r\n]+", "");
             // Handle command case
             if (l.charAt(0) == '.'){
@@ -31,11 +31,13 @@ public class Parser {
                 } else {
                     // handle indent case
                     if (l.startsWith(".indent")) {
-                        // use regex matching to extract the number
+                        // use regex matching to extract the number. Need optional - sign for negatives
+                        // Matching: \\s+: 1 or more spaces. (-?\\d+): 1 or 0 - signs followed by 1 or more digits
                         String pattern = "\\.indent\\s+(-?\\d+)";
                         Pattern regex = Pattern.compile(pattern);
                         Matcher matcher = regex.matcher(l);
                         if (matcher.find()){
+                            // Parentheses in pattern -> group 1 of matcher contains the full number (incl sign)
                             int n = Integer.parseInt(matcher.group(1));
                             FunctionLine fLine = new FunctionLine(Function.INDENT, n);
                             lineContents.add(fLine);

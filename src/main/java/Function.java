@@ -3,7 +3,7 @@
 public enum Function {
     PARAGRAPH,
     FILL,
-    NOFILL,
+    NO_FILL,
     REGULAR,
     ITALIC,
     BOLD,
